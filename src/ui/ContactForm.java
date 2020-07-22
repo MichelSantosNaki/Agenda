@@ -1,5 +1,7 @@
 package ui;
 
+import Business.ContactBusiness;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,7 @@ public class ContactForm extends JFrame {
     private JTextField textPhone;
     private JButton buttonSave;
     private JButton ButtonCancel;
+    private ContactBusiness mcontactBusiness;
 
     public  ContactForm(){
 
@@ -23,14 +26,28 @@ public class ContactForm extends JFrame {
         setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2 ); // para começar no meio da tela
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mcontactBusiness =new ContactBusiness();
 
         setListeners();
     }
-
+    //escuta para os botoês save e cancel
     private  void setListeners(){
         buttonSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+               try{
+                   //pegar o que o usuario digitou na caixa de texto nome e telefone
+                   String name = textName.getText();
+                   String phone = textPhone.getText();
+
+                   mcontactBusiness.save(name,phone);
+
+                   new MainForm();
+                   dispose();
+               }catch (Exception excp){
+                   JOptionPane.showMessageDialog(new JFrame(),excp.getMessage());
+               }
+
 
             }
         });
